@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cinema.mapper.NoticeMapper">
+    <insert id="createNotice">
+        insert into cinema.notice
+        (title,content,publish_time)
+        values
+        (
+            #{notice.title,jdbcType=VARCHAR},
+            #{notice.content,jdbcType=VARCHAR},
+            #{notice.publishTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <select id="getAllNotice" resultType="cinema.entities.Notice">
+        select * from cinema.notice
+        order by publish_time desc
+    </select>
+
+    <delete id="deleteById">
+        delete from cinema.notice
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <select id="getNoticeByPage" resultType="cinema.entities.Notice">
+        select * from cinema.notice
+        order by publish_time desc
+        limit #{currentPage,jdbcType=INTEGER} , #{size,jdbcType=INTEGER}
+    </select>
+    <select id="getNoticeNumber" resultType="java.lang.Integer">
+        select count(*) from cinema.notice
+    </select>
+</mapper>

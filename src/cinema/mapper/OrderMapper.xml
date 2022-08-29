@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cinema.mapper.OrderMapper">
+
+<insert id="addOrder">
+    insert into cinema.order
+    (number,user_id,arrangement_id,ticket_number,money,seat,time,status)
+    values
+    (
+        #{order.number,jdbcType=VARCHAR},
+        #{order.userId,jdbcType=BIGINT},
+        #{order.arrangementId,jdbcType=BIGINT},
+        #{order.ticketNumber,jdbcType=INTEGER},
+        #{order.money,jdbcType=DOUBLE},
+        #{order.seat,jdbcType=DOUBLE},
+        #{order.time,jdbcType=TIMESTAMP},
+        #{order.status,jdbcType=INTEGER}
+    )
+</insert>
+
+<update id="updateStatus">
+    update cinema.order
+    <set>
+        status = #{status,jdbcType=INTEGER}
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+</update>
+
+
+<select id="getOrderListByPage" resultType="cinema.entities.Order">
+    select * from cinema.order
+    where
+        user_id = #{userId,jdbcType=BIGINT}
+    order by time desc
+    limit #{page,jdbcType=INTEGER},#{size,jdbcType=INTEGER}
+</select>
+
+<select id="getOrderNumberById" resultType="java.lang.Integer">
+    select count(*) from cinema.order
+    where user_id = #{userId,jdbcType=BIGINT}
+</select>
+
+<select id="getById" resultType="cinema.entities.Order">
+    select * from cinema.order
+    where id = #{id,jdbcType=BIGINT}
+</select>
+
+<select id="getUserOrder" resultType="cinema.entities.Order">
+    select * from cinema.`order`
+    where user_id = #{id,jdbcType=BIGINT}
+</select>
+
+<select id="getAllOrders" resultType="cinema.entities.Order">
+    SELECT
+        cinema.`user`.`name`,
+        cinema.`user`.phone,
+        cinema.`order`.*
+    FROM
+        cinema.`user`
+        INNER JOIN
+        cinema.`order`
+        ON
+            cinema.`user`.id = cinema.`order`.user_id
+    where 1 = 1
+    <if test="key != null and key != ''">
+        and cinema.user.phone like concat('%', #{key,jdbcType=VARCHAR}, '%')
+        or cinema.`order`.number like concat('%', #{key,jdbcType=VARCHAR}, '%')
+    </if>
+</select>
+</mapper>

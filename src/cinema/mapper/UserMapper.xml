@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cinema.mapper.UserMapper">
+   <select id="userUnique" resultType="java.lang.Integer">
+    select count(*) from cinema.user
+    where phone = #{phone,jdbcType=VARCHAR}
+   </select>
+
+   <insert id="createUser" >
+        insert into cinema.user
+        (phone,password,`name`,role)
+        values
+        (
+        #{user.phone,jdbcType=VARCHAR},
+        #{user.password,jdbcType=VARCHAR},
+        #{user.name,jdbcType=VARCHAR},
+        #{user.role,jdbcType=INTEGER}
+        )
+   </insert>
+
+   <select id="login" resultType="cinema.entities.User">
+        select * from cinema.user
+        where
+            phone = #{phone,jdbcType=VARCHAR}
+        and
+            password = #{password,jdbcType=VARCHAR}
+   </select>
+   <update id="changePassword">
+    update cinema.user
+    <set>
+        password = #{password,jdbcType=VARCHAR}
+    </set>
+    where phone = #{phone,jdbcType=VARCHAR}
+
+   </update>
+
+   <select id="getAllUsers" resultType="cinema.entities.User">
+       select * from cinema.user
+       where role = 0
+   </select>
+
+   <delete id="removeUser">
+       delete from cinema.user
+       where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <select id="getInfo" resultType="cinema.entities.User">
+        select * from cinema.user
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+
+
+</mapper>

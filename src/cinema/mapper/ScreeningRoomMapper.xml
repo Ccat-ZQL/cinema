@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cinema.mapper.ScreeningRoomMapper">
+
+    <select id="getById" resultType="cinema.entities.ScreeningRoom">
+        select * from cinema.screening_room
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="getAll" resultType="cinema.entities.ScreeningRoom">
+        select * from cinema.screening_room;
+    </select>
+
+    <select id="getOne" resultType="cinema.entities.ScreeningRoom">
+        select * from cinema.screening_room
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+</mapper>

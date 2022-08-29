@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cinema.mapper.MovieMapper">
+
+    <select id="getAll" resultType="cinema.entities.Movie">
+        select * from cinema.movie
+        order by show_time desc ;
+    </select>
+
+    <select id="detail" resultType="cinema.entities.Movie">
+        select * from cinema.movie
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="getMovies" resultType="cinema.entities.Movie">
+        select * from cinema.movie
+        limit #{page,jdbcType=INTEGER},6
+    </select>
+
+    <select id="getMovieNumber" resultType="java.lang.Integer">
+        select count(*) from cinema.movie
+    </select>
+
+    <delete id="del">
+        delete from cinema.movie
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="addMovie" parameterType="cinema.entities.Movie">
+        insert into cinema.movie(name, show_time, introduction, pic_url)
+        values (#{movie.name,jdbcType=VARCHAR}, #{movie.showTime,jdbcType=TIMESTAMP}, #{movie.introduction,jdbcType=VARCHAR},
+                #{movie.picUrl,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateMovie">
+        update cinema.movie
+        set name = #{movie.name,jdbcType=VARCHAR},
+            introduction = #{movie.introduction,jdbcType=VARCHAR},
+            show_time = #{movie.showTime,jdbcType=TIMESTAMP}
+            <if test="movie.picUrl != null and movie.picUrl != ''">
+                , pic_url = #{movie.picUrl,jdbcType=VARCHAR}
+            </if>
+        where id = #{movie.id,jdbcType=BIGINT}
+    </update>
+</mapper>

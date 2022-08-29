@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cinema.mapper.ArrangementMapper">
+
+<update id="updateSeats">
+    update cinema.arrangement
+    <set>
+        seat = #{seat,jdbcType=VARCHAR}
+    </set>
+    where
+        id = #{id,jdbcType=BIGINT}
+</update>
+
+
+    <select id="getArrangementByDate" resultType="cinema.entities.Arrangement">
+        select * from cinema.arrangement
+        where
+            movie_id = #{movieId,jdbcType=BIGINT}
+        and
+            start_time > now()
+        order by start_time asc
+    </select>
+
+    <select id="getByMovieId" resultType="cinema.entities.Arrangement">
+        select * from cinema.arrangement
+        where movie_id = #{id,jdbcType=BIGINT}
+        order by start_time asc
+    </select>
+
+    <select id="getById" resultType="cinema.entities.Arrangement">
+        select * from cinema.arrangement
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <delete id="delById">
+        delete from cinema.arrangement
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="addArrangement">
+        insert into cinema.arrangement(movie_id, room_id, start_time, end_time, price, seat)
+        values (#{arrangement.movieId,jdbcType=BIGINT},
+                #{arrangement.roomId,jdbcType=BIGINT},
+                #{arrangement.startTime,jdbcType=TIMESTAMP},
+                #{arrangement.endTime,jdbcType=TIMESTAMP},
+                #{arrangement.price,jdbcType=DOUBLE},
+                #{arrangement.seat,jdbcType=VARCHAR}
+        )
+    </insert>
+</mapper>
